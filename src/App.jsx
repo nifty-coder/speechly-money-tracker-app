@@ -9,6 +9,9 @@ const App = () => {
 
     return (
         <div>
+            <h1>Welcome to Finance6s</h1>
+            <p>6x Faster, All In One Place, so Manage Your Finances here!</p>
+            
             <Grid 
              className={classes.grid} 
              container 
