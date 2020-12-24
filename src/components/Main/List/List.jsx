@@ -4,6 +4,7 @@ import { Delete, MoneyOff, MoneyOutlined } from '@material-ui/icons';
 import { FinanceTrackerContext } from '../../../context/context';
 import formatDate from '../../../utils/formatDate';
 import useStyles from './styles';
+import commafy from '../../../utils/commafy';
 
 const List = () => {
     const classes = useStyles();
@@ -20,7 +21,7 @@ const List = () => {
                             </Avatar>
                         </ListItemAvatar>
 
-                        <ListItemText primary={trsc.category} secondary={`$${trsc.amount} on ${formatDate(trsc.date)}`} />
+                        <ListItemText primary={trsc.category} secondary={`$${commafy(trsc.amount)} created on ${formatDate(trsc.date)}`} />
 
                         <ListItemSecondaryAction>
                            <IconButton edge="end" aria-label="delete" onClick={() => deleteTransaction(trsc.id)}>
