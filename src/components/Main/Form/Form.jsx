@@ -6,6 +6,7 @@ import { FinanceTrackerContext } from '../../../context/context';
 import { incomeCategories, expenseCategories } from '../../../constants/categories';
 import useStyles from './styles'; 
 import { useSpeechContext } from '@speechly/react-client';
+import Confirmation from '../../Confirmation/Confirmation';
 
 const initialState = {
     amount: '',
@@ -19,6 +20,7 @@ const Form = () => {
     const [formData, setFormData] = useState(initialState);
     const { addTransaction } = useContext(FinanceTrackerContext);
     const { segment } = useSpeechContext();
+    const [open, setOpen] = useState(false);
 
     const createTransaction = () => {
         if(Number.isNaN(Number(formData.amount)) || !formData.amount || !formData.category || !formData.type || !formData.date) {
@@ -27,6 +29,7 @@ const Form = () => {
 
         const transaction = { ...formData, amount: Number(formData.amount), id: uuidv4() };  
         addTransaction(transaction);
+        setOpen(true);
         setFormData(initialState);
     };   
     
@@ -74,6 +77,7 @@ const Form = () => {
 
     return (
         <Grid container spacing={2}>
+          <Confirmation open={open} setOpen={setOpen} severity="success" message="Transaction successfully added!" />
             <Grid item xs={12}>
                 <Typography variant="subtitle2" align="center" gutterBottom>
                   {segment && segment.words.map((w) => w.value.toLowerCase()).join(" ")}
