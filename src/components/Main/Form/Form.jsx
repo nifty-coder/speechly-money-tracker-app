@@ -8,14 +8,14 @@ import useStyles from './styles';
 import { useSpeechContext } from '@speechly/react-client';
 import Confirmation from '../../Confirmation/Confirmation';
 
-const initialState = {
-    amount: '',
-    category: '',
-    type: '',
-    date: formatDate(new Date())
-}
+const Form = ({editMode, state}) => {
+  const initialState = {
+    amount: editMode ? state.amount : '',
+    category: editMode ? state.category : '',
+    type: editMode ? state.type : '',
+    date: editMode ? state.date : formatDate(new Date())
+  };
 
-const Form = () => {
     const classes = useStyles();
     const [formData, setFormData] = useState(initialState);
     const { addTransaction } = useContext(FinanceTrackerContext);
@@ -76,48 +76,44 @@ const Form = () => {
     const selectedCategories = formData.type === "Income" ? incomeCategories : expenseCategories;
 
     return (
-        <Grid container spacing={2}>
-          <Confirmation open={open} setOpen={setOpen} severity="success" message="Transaction successfully added!" />
-            <Grid item xs={12}>
-                <Typography variant="subtitle2" align="center" gutterBottom>
-                  {segment && segment.words.map((w) => w.value.toLowerCase()).join(" ")}
-                </Typography>
-            </Grid>
-            
-            <Grid item xs={6}>
-                <FormControl fullWidth>
-                    <InputLabel>Type</InputLabel>
-                    <Select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })}>
-                        <MenuItem value="Income">Income</MenuItem>
-                        <MenuItem value="Expense">Expense</MenuItem>
-                    </Select>
-                </FormControl>
-            </Grid>
-
-            <Grid item xs={6}>
-                <FormControl fullWidth>
-                    <InputLabel>Category</InputLabel>
-                    <Select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
-                        {selectedCategories.map((c) => <MenuItem key={c.type} value={c.type}>{c.type}</MenuItem>)}
-                    </Select>
-                </FormControl>
-            </Grid>
-
-           <Grid item xs={6}>
-            <TextField type="number" label="Amount ($)" fullWidth value={formData.amount} onChange={(e) => setFormData({ ...formData, amount: e.target.value })} />     
+      <Grid container spacing={2}>
+        <Confirmation open={open} setOpen={setOpen} severity="success" message="Transaction successfully added!" />
+          <Grid item xs={12}>
+              <Typography variant="subtitle2" align="center" gutterBottom>
+                {segment && segment.words.map((w) => w.value.toLowerCase()).join(" ")}
+              </Typography>
+          </Grid>
+          
+          <Grid item xs={6}>
+              <FormControl fullWidth>
+                  <InputLabel>Type</InputLabel>
+                  <Select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })}>
+                      <MenuItem value="Income">Income</MenuItem>
+                      <MenuItem value="Expense">Expense</MenuItem>
+                  </Select>
+              </FormControl>
           </Grid>
 
           <Grid item xs={6}>
-            <TextField type="date" label="Date" fullWidth value={formData.date} onChange={(e) => {
-                console.log("Before: " + e.target.value);
-                setFormData({ ...formData, date: e.target.value });
-                console.log("After: " + e.target.value);
-            }} />     
+              <FormControl fullWidth>
+                  <InputLabel>Category</InputLabel>
+                  <Select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
+                      {selectedCategories.map((c) => <MenuItem key={c.type} value={c.type}>{c.type}</MenuItem>)}
+                  </Select>
+              </FormControl>
           </Grid>
 
-          <Button className={classes.button} variant="outlined" color="primary" fullWidth onClick={createTransaction}>Add</Button>
+         <Grid item xs={6}>
+          <TextField type="number" label="Amount" fullWidth value={formData.amount} onChange={(e) => setFormData({ ...formData, amount: e.target.value })} />     
         </Grid>
-    );
+      
+        <Grid item xs={6}>
+          <TextField type="date" label="Date" fullWidth value={formData.date} onChange={(e) =>setFormData({ ...formData, date: e.target.value })} />     
+        </Grid>
+
+        <Button className={classes.button} variant="outlined" color="primary" fullWidth onClick={createTransaction}>Add</Button>
+      </Grid>
+  );
 };
 
 export default Form;

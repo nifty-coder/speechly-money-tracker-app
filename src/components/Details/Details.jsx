@@ -5,7 +5,7 @@ import commafy from '../../utils/commafy';
 import useStyles from './styles';
 import useTransactions from '../../useTransactions';
 
-const DetailsCard = ({ title, subheader }) => {
+const DetailsCard = ({ title, subheader, currencySymbol }) => {
   const { total, chartData } = useTransactions(title);
   const classes = useStyles();
 
@@ -13,7 +13,7 @@ const DetailsCard = ({ title, subheader }) => {
     <Card className={title === 'Income' ? classes.income : classes.expense}>
       <CardHeader title={title} subheader={subheader} />
       <CardContent>
-        <Typography variant="h5">${commafy(total)}</Typography>
+        <Typography variant="h5">{`${currencySymbol}` + commafy(total)}</Typography>
         <Doughnut data={chartData} />
       </CardContent>
     </Card>

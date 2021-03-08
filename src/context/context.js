@@ -17,8 +17,11 @@ export const AppProvider = (props) => {
         dispatch({ type: DELETE_TRANSACTION, payload: id });
     };  
 
-    
-  const balance = transactions.reduce((acc, currVal) => (currVal.type === 'Expense' ? acc - currVal.amount : acc + currVal.amount), 0);
+   const balance = Math.round(
+       transactions.reduce((acc, currVal) => (
+           currVal.type === 'Expense' ? acc - currVal.amount : acc + currVal.amount
+           ), 0).toFixed(2)
+   );
 
     const contextValue = {
         addTransaction,

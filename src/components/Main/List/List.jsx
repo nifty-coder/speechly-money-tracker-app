@@ -7,7 +7,7 @@ import useStyles from './styles';
 import commafy from '../../../utils/commafy';
 import Confirmation from '../../Confirmation/Confirmation';
 
-const List = () => {
+const List = ({currencySymbol}) => {
     const classes = useStyles();
     const { deleteTransaction, transactions } = useContext(FinanceTrackerContext);
     const [open, setOpen] = useState(false);
@@ -29,7 +29,7 @@ const List = () => {
                             </Avatar>
                         </ListItemAvatar>
 
-                        <ListItemText primary={trsc.category} secondary={`$${commafy(trsc.amount)} created on ${formatDate(trsc.date)}`} />
+                        <ListItemText primary={trsc.category} secondary={`${currencySymbol}${commafy(trsc.amount)} created on ${formatDate(trsc.date)}`} />
 
                         <ListItemSecondaryAction>
                            <IconButton edge="end" aria-label="delete" onClick={() => removeTransaction(trsc.id)}>
