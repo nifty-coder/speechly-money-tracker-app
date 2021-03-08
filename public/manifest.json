@@ -1,21 +1,12 @@
 {
-  "short_name": "Finance6s",
-  "name": "Finance6s Tracker",
+  "short_name": "Finan6s",
+  "name": "Finan6s Tracker",
   "icons": [
     {
       "src": "AppIcon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/png"
-    },
-    {
-      "src": "AppIcon.png",
+      "sizes": "512x512 192x192 64x64 32x32 24x24 16x16",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "AppIcon.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
