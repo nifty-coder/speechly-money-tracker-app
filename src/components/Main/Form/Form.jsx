@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { TextField, Typography, Grid, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
-import formatDate from '../../../utils/formatDate';
 import { FinanceTrackerContext } from '../../../context/context';
 import { incomeCategories, expenseCategories } from '../../../constants/categories';
 import useStyles from './styles'; 
@@ -13,7 +12,7 @@ const Form = ({editMode, state}) => {
     amount: editMode ? state.amount : '',
     category: editMode ? state.category : '',
     type: editMode ? state.type : '',
-    date: editMode ? state.date : formatDate(new Date())
+    date: editMode ? state.date : ''
   };
 
     const classes = useStyles();
@@ -21,12 +20,25 @@ const Form = ({editMode, state}) => {
     const { addTransaction } = useContext(FinanceTrackerContext);
     const { segment } = useSpeechContext();
     const [open, setOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const createTransaction = () => {
         if(Number.isNaN(Number(formData.amount)) || !formData.amount || !formData.category || !formData.type || !formData.date) {
-            return;
-        }
+          return setErrorMessage("Invalid data!");
+        } 
 
+        if(Number(formData.amount) === 0) return setErrorMessage("Amount can't be 0!");
+        
+        if(Number(formData.amount) < 0) {
+          setFormData({
+            ...formData, 
+            type: 'Expense',
+            amount: Math.abs(Number(formData.amount)),
+            category: ''
+          });
+          return setErrorMessage("Pick a category for the expense!");       
+        }
+        
         const transaction = { ...formData, amount: Number(formData.amount), id: uuidv4() };  
         addTransaction(transaction);
         setOpen(true);
@@ -63,6 +75,7 @@ const Form = ({editMode, state}) => {
                 setFormData({ ...formData, date: s.value });
                 break;
               default:
+                // nothing
                 break;
             }
           });
@@ -71,7 +84,8 @@ const Form = ({editMode, state}) => {
             createTransaction();
           }
         }
-      }, [segment]);    
+        // eslint-disable-next-line
+      }, [segment, formData, createTransaction]);    
 
     const selectedCategories = formData.type === "Income" ? incomeCategories : expenseCategories;
 
@@ -82,6 +96,7 @@ const Form = ({editMode, state}) => {
               <Typography variant="subtitle2" align="center" gutterBottom>
                 {segment && segment.words.map((w) => w.value.toLowerCase()).join(" ")}
               </Typography>
+              <p style={{color: "#ff0000"}}>{errorMessage}</p>
           </Grid>
           
           <Grid item xs={6}>
@@ -108,7 +123,7 @@ const Form = ({editMode, state}) => {
         </Grid>
       
         <Grid item xs={6}>
-          <TextField type="date" label="Date" fullWidth value={formData.date} onChange={(e) =>setFormData({ ...formData, date: e.target.value })} />     
+          <TextField type="date" inputProps={{ max: "9999-12-31" }} InputLabelProps={{ shrink: true }} label="Date" fullWidth value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />     
         </Grid>
 
         <Button className={classes.button} variant="outlined" color="primary" fullWidth onClick={createTransaction}>Add</Button>

@@ -53,14 +53,13 @@ const App = () => {
                         variant="outlined"
                         value={currency} 
                         onChange={inputChangedHandler}
-                        style={{width: 100}}>
-                            <MenuItem value="$">$</MenuItem>    
-                            <MenuItem value="₹">₹</MenuItem>    
-                            <MenuItem value="₺">₺</MenuItem>     
-                            <MenuItem value="£">£</MenuItem>   
-                            <MenuItem value="€">€</MenuItem>   
+                        style={{width: 150}}>
+                            <MenuItem value="$">$ (Dollars)</MenuItem>    
+                            <MenuItem value="₹">₹ (Rupees)</MenuItem>    
+                            <MenuItem value="₺">₺ (Liras)</MenuItem>     
+                            <MenuItem value="£">£ (Pounds)</MenuItem>   
+                            <MenuItem value="€">€ (Euros)</MenuItem>   
                         </Select>
-                        {/* <TextField label="Currency" value={currency} onChange={inputChangedHandler} /> */}
                     </CardContent>
                 </Card>       
               </Grid> 

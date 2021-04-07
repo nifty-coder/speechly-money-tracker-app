@@ -18,9 +18,9 @@ export const AppProvider = (props) => {
     };  
 
    const balance = Math.round(
-       transactions.reduce((acc, currVal) => (
-           currVal.type === 'Expense' ? acc - currVal.amount : acc + currVal.amount
-           ), 0).toFixed(2)
+    transactions.reduce((acc, currVal) => (
+     currVal.type === 'Expense' ? acc - currVal.amount : acc + currVal.amount
+    ), 0).toFixed(2)
    );
 
     const contextValue = {

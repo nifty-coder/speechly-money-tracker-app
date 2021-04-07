@@ -1,5 +1,3 @@
 import moment from 'moment';
-
-const formatDate = () => moment(new Date()).format('MMMM Do YYYY, h:mm a');
-
+const formatDate = (date) => moment(date).format('MMM D YYYY');
 export default formatDate;
